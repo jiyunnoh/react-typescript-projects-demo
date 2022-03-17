@@ -1,3 +1,6 @@
+import Card from '../UI/Card';
+import classes from './AddUser.module.css';
+
 // Enter username and age. Add button to submit.
 const AddUser = () => {
     const addUserHandler = (event: any) => {
@@ -7,7 +10,9 @@ const AddUser = () => {
     }
 
     return (
-        // If add parentheses, it will execuete when line 11 is parsed.
+        // have to have 'className' prop in Card.
+        <Card className={classes.input}>
+        {/* If add parentheses, it will execuete when line 11 is parsed. */}
         <form onSubmit={addUserHandler}>
             {/* 'for' is already assigned in JavaScript. Instead, use 'htmlFor' */}
             {/* 'for' is used in labels. It refers to the id of the element this label is associated with */}
@@ -17,6 +22,7 @@ const AddUser = () => {
             <input id="age" type="number" />
             <button type="submit">Add User</button>
         </form>
+        </Card>
     )
 }
 
