@@ -1,13 +1,27 @@
+import { useState } from 'react';
 import Button from '../UI/Button';
 import Card from '../UI/Card';
 import classes from './AddUser.module.css';
 
 // Enter username and age. Add button to submit.
 const AddUser = () => {
+    const [enteredUsername, setEnteredUsername] = useState('');
+    const [enteredAge, setEnteredAge] = useState('');
+
     const addUserHandler = (event: any) => {
         // when click the submit button, it prevents the request from being sent by default, and the page will not reload.
-        // only request when we want.
+        // only request when we want. But here, we don't request.
         event.preventDefault();
+        console.log(enteredUsername);
+        console.log(enteredAge);
+    }
+
+    const usernameChangeHandler = (event: any) => {
+        setEnteredUsername(event.target.value);
+    }
+
+    const ageChangeHandler = (event: any) => {
+        setEnteredAge(event.target.value);
     }
 
     return (
@@ -18,9 +32,9 @@ const AddUser = () => {
             {/* 'for' is already assigned in JavaScript. Instead, use 'htmlFor' */}
             {/* 'for' is used in labels. It refers to the id of the element this label is associated with */}
             <label htmlFor="username">Username</label>
-            <input id="username" type="text" />
+            <input id="username" type="text" onChange={usernameChangeHandler} />
             <label htmlFor="age">Age (Years)</label>
-            <input id="age" type="number" />
+            <input id="age" type="number" onChange={ageChangeHandler} />
             <Button type="submit">Add User</Button>
         </form>
         </Card>
