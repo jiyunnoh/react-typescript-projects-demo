@@ -4,7 +4,7 @@ import Card from '../UI/Card';
 import classes from './AddUser.module.css';
 
 // Enter username and age. Add button to submit.
-const AddUser = () => {
+const AddUser = (props: { onAddUser: (arg0: string, arg1: string) => void }) => {
     const [enteredUsername, setEnteredUsername] = useState('');
     const [enteredAge, setEnteredAge] = useState('');
 
@@ -20,7 +20,7 @@ const AddUser = () => {
         if (+enteredAge < 1) {
             return;
         }
-        console.log(enteredUsername, enteredAge);
+        props.onAddUser(enteredUsername, enteredAge);
         setEnteredUsername('');
         setEnteredAge('');
     }
