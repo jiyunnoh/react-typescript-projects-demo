@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../UI/Button';
 import Card from '../UI/Card';
 import ErrorModal from '../UI/ErrorModal';
 import classes from './AddUser.module.css';
 
 // Enter username and age. Add button to submit.
-const AddUser = (props: { onAddUser: (arg0: string, arg1: string) => void }) => {
+const AddUser = (props: { onAddUser: (username: string, age: string) => void }) => {
     const [enteredUsername, setEnteredUsername] = useState('');
     const [enteredAge, setEnteredAge] = useState('');
     const [error, setError] = useState<{ title: string; message: string; } | null>();
 
-    const addUserHandler = (event: any) => {
+    const addUserHandler = (event: React.FormEvent<HTMLFormElement>) => {
         // when click the submit button, it prevents the request from being sent by default, and the page will not reload.
         // only request when we want. But here, we don't request.
         event.preventDefault();
@@ -35,11 +35,11 @@ const AddUser = (props: { onAddUser: (arg0: string, arg1: string) => void }) => 
         setEnteredAge('');
     }
 
-    const usernameChangeHandler = (event: any) => {
+    const usernameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEnteredUsername(event.target.value);
     }
 
-    const ageChangeHandler = (event: any) => {
+    const ageChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEnteredAge(event.target.value);
     }
 

@@ -1,7 +1,7 @@
 import Card from "../UI/Card";
 import classes from "./UsersList.module.css";
 
-const UsersList = (props: any) => {
+const UsersList = (props: { users: { name: string; age: number; id: number; }[]}) => {
     return (
         <Card className={classes.users}>
             <ul>
