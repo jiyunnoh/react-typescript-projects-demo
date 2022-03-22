@@ -8,6 +8,7 @@ import classes from './AddUser.module.css';
 const AddUser = (props: { onAddUser: (arg0: string, arg1: string) => void }) => {
     const [enteredUsername, setEnteredUsername] = useState('');
     const [enteredAge, setEnteredAge] = useState('');
+    const [error, setError] = useState<{ title: string; message: string; } | null>();
 
     const addUserHandler = (event: any) => {
         // when click the submit button, it prevents the request from being sent by default, and the page will not reload.
@@ -16,9 +17,17 @@ const AddUser = (props: { onAddUser: (arg0: string, arg1: string) => void }) => 
 
         // trim() removes excess white space.
         if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+            setError({
+                title: 'Invalid input',
+                message: 'Please enter a valid name and age (non-empty values).'
+            });
             return;
         }
         if (+enteredAge < 1) {
+            setError({
+                title: 'Invalid age',
+                message: 'Please enter a valid age (> 0).'
+            });
             return;
         }
         props.onAddUser(enteredUsername, enteredAge);
@@ -34,9 +43,13 @@ const AddUser = (props: { onAddUser: (arg0: string, arg1: string) => void }) => 
         setEnteredAge(event.target.value);
     }
 
+    const errorHandler = () => {
+        setError(null);
+    }
+
     return (
         <div>
-            <ErrorModal title="An error occured!" message="Something went wrong!" />
+            {error && <ErrorModal title={error.title} message={error.message} onConfirm={errorHandler} />}
             {/* have to have 'className' prop in Card. */}
             <Card className={classes.input}>
                 {/* If add parentheses, it will execuete when line 11 is parsed. */}
