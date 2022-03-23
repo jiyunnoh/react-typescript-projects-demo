@@ -68,3 +68,29 @@ const AddUser = (props: { onAddUser: (username: string, age: string) => void }) 
 }
 
 export default AddUser;
+
+        // #1
+        // turn it into javascript array.
+        // {} makes it possible to run basic JavaScript expressions in JSX code.
+        // but this is no longer JSX, so doesn't need {} wrapping ErrorModal.
+
+        // #2
+        // key="error-modal" <ErrorModal>
+        // key="add-user-card" <Card>
+
+        // [
+        //     error && <ErrorModal title={error.title} message={error.message} onConfirm={errorHandler} />,
+        //     /* have to have 'className' prop in Card. */
+        //     <Card className={classes.input}>
+        //         {/* If add parentheses, it will execuete when line 11 is parsed. */}
+        //         <form onSubmit={addUserHandler}>
+        //             {/* 'for' is already assigned in JavaScript. Instead, use 'htmlFor' */}
+        //             {/* 'for' is used in labels. It refers to the id of the element this label is associated with */}
+        //             <label htmlFor="username">Username</label>
+        //             <input id="username" type="text" value={enteredUsername} onChange={usernameChangeHandler} />
+        //             <label htmlFor="age">Age (Years)</label>
+        //             <input id="age" type="number" value={enteredAge} onChange={ageChangeHandler} />
+        //             <Button type="submit">Add User</Button>
+        //         </form>
+        //     </Card>
+        // ]
