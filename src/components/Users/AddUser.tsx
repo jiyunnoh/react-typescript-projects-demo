@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Wrapper from '../Helpers/Wrapper';
 import Button from '../UI/Button';
 import Card from '../UI/Card';
@@ -7,8 +7,14 @@ import classes from './AddUser.module.css';
 
 // Enter username and age. Add button to submit.
 const AddUser = (props: { onAddUser: (username: string, age: string) => void }) => {
-    const [enteredUsername, setEnteredUsername] = useState('');
-    const [enteredAge, setEnteredAge] = useState('');
+    // ref value is always an object which always has a current prop.
+    // The current prop holds the actual value that ref is connected with.
+    // By default, the value is undefined.
+    const nameInputRef = useRef<null | HTMLInputElement>(null);
+    const ageInputRef = useRef<null | HTMLInputElement>(null);
+
+    // const [enteredUsername, setEnteredUsername] = useState('');
+    // const [enteredAge, setEnteredAge] = useState('');
     const [error, setError] = useState<{ title: string; message: string; } | null>();
 
     const addUserHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -16,33 +22,41 @@ const AddUser = (props: { onAddUser: (username: string, age: string) => void }) 
         // only request when we want. But here, we don't request.
         event.preventDefault();
 
-        // trim() removes excess white space.
-        if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
-            setError({
-                title: 'Invalid input',
-                message: 'Please enter a valid name and age (non-empty values).'
-            });
-            return;
+        if (nameInputRef.current && ageInputRef.current) {
+            console.log(nameInputRef.current.value);
+            const enteredName = nameInputRef.current.value;
+            const enteredUserAge = ageInputRef.current.value;
+
+            // trim() removes excess white space.
+            if (enteredName.trim().length === 0 || enteredUserAge.trim().length === 0) {
+                setError({
+                    title: 'Invalid input',
+                    message: 'Please enter a valid name and age (non-empty values).'
+                });
+                return;
+            }
+            if (+enteredUserAge < 1) {
+                setError({
+                    title: 'Invalid age',
+                    message: 'Please enter a valid age (> 0).'
+                });
+                return;
+            }
+            props.onAddUser(enteredName, enteredUserAge);
+            // setEnteredUsername('');
+            // setEnteredAge('');
+            nameInputRef.current.value = '';
+            ageInputRef.current.value = '';
         }
-        if (+enteredAge < 1) {
-            setError({
-                title: 'Invalid age',
-                message: 'Please enter a valid age (> 0).'
-            });
-            return;
-        }
-        props.onAddUser(enteredUsername, enteredAge);
-        setEnteredUsername('');
-        setEnteredAge('');
     }
 
-    const usernameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEnteredUsername(event.target.value);
-    }
+    // const usernameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setEnteredUsername(event.target.value);
+    // }
 
-    const ageChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEnteredAge(event.target.value);
-    }
+    // const ageChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setEnteredAge(event.target.value);
+    // }
 
     const errorHandler = () => {
         setError(null);
@@ -59,9 +73,21 @@ const AddUser = (props: { onAddUser: (username: string, age: string) => void }) 
                     {/* 'for' is already assigned in JavaScript. Instead, use 'htmlFor' */}
                     {/* 'for' is used in labels. It refers to the id of the element this label is associated with */}
                     <label htmlFor="username">Username</label>
-                    <input id="username" type="text" value={enteredUsername} onChange={usernameChangeHandler} />
+                    <input
+                        id="username"
+                        type="text"
+                        // value={enteredUsername}
+                        // onChange={usernameChangeHandler}
+                        ref={nameInputRef}
+                    />
                     <label htmlFor="age">Age (Years)</label>
-                    <input id="age" type="number" value={enteredAge} onChange={ageChangeHandler} />
+                    <input
+                        id="age"
+                        type="number"
+                        // value={enteredAge}
+                        // onChange={ageChangeHandler} 
+                        ref={ageInputRef}
+                    />
                     <Button type="submit">Add User</Button>
                 </form>
             </Card>
